@@ -8,7 +8,6 @@ import (
 
 	"github.com/antchfx/htmlquery"
 	"github.com/gocolly/colly"
-	"github.com/gocolly/redisstorage"
 )
 
 // Agent 为模拟浏览器客户端
@@ -61,21 +60,21 @@ func main() {
 		}
 	})
 
-	// Redis连接属性:
-	storage := &redisstorage.Storage{
-		Address:  "127.0.0.1:6379",
-		Password: "",
-		DB:       0,
-		// Prefix:   "httpbin_test",
-	}
+	// // Redis连接属性:
+	// storage := &redisstorage.Storage{
+	// 	Address:  "127.0.0.1:6379",
+	// 	Password: "",
+	// 	DB:       0,
+	// 	// Prefix:   "httpbin_test",
+	// }
 
-	err := c.SetStorage(storage)
-	if err != nil {
-		panic(err)
-	}
+	// err := c.SetStorage(storage)
+	// if err != nil {
+	// 	panic(err)
+	// }
 
-	// 关闭Redis连接
-	defer storage.Client.Close()
+	// // 关闭Redis连接
+	// defer storage.Client.Close()
 
 	c.Visit(TargetURI)
 }
