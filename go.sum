@@ -27,6 +27,10 @@ github.com/golang/protobuf v1.5.2/go.mod h1:XVQd3VNwM+JqD3oG2Ue2ip4fOMUkwXdXDdiu
 github.com/google/go-cmp v0.5.5/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
 github.com/kennygrant/sanitize v1.2.4 h1:gN25/otpP5vAsO2djbMhF/LQX6R7+O1TB4yv8NzpJ3o=
 github.com/kennygrant/sanitize v1.2.4/go.mod h1:LGsjYYtgxbetdg5owWB2mpgUL6e2nfw2eObZ0u0qvak=
+github.com/luweiv9988/go_redis v0.0.0-20211118070111-4b03c9e00cc3 h1:+5jL2Znc+KwgbNZLhXhnsS8FCQyTBDvsYESBEkwFf7w=
+github.com/luweiv9988/go_redis v0.0.0-20211118070111-4b03c9e00cc3/go.mod h1:W/MES5E4/jM0RobpNAoOuEAdFETx9wMfiC/tcf9lldk=
+github.com/luweiv9988/go_redis v0.0.0-20211118091837-79b17067b3fa h1:wvTmEgf1bXbWkuNniZItSYYrG0+S4un5v3Dl+sSSOPk=
+github.com/luweiv9988/go_redis v0.0.0-20211118091837-79b17067b3fa/go.mod h1:W/MES5E4/jM0RobpNAoOuEAdFETx9wMfiC/tcf9lldk=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/saintfish/chardet v0.0.0-20120816061221-3af4cd4741ca h1:NugYot0LIVPxTvN8n+Kvkn6TrbMyxQiuvKdEwFdR9vI=
 github.com/saintfish/chardet v0.0.0-20120816061221-3af4cd4741ca/go.mod h1:uugorj2VCxiV1x+LzaIdVa9b4S4qGAcH6cbhh4qVxOU=
