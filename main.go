@@ -8,6 +8,7 @@ import (
 	"github.com/antchfx/htmlquery"
 	"github.com/gocolly/colly"
 	rds "github.com/luweiv9988/go_redis"
+	cron "github.com/robfig/cron/v3"
 )
 
 // Agent 为模拟浏览器客户端
@@ -89,11 +90,19 @@ func main() {
 	})
 
 	// 关闭Redis连接
-	// defer storage.Client.Close()
+	defer storage.Close()
 
 	c.OnScraped(func(r *colly.Response) {
 		log.Println("Finished", r.Request.URL)
 	})
 
-	c.Visit(TargetURI)
+	crontab := cron.New()
+	task := func() {
+		c.Visit(TargetURI)
+	}
+	crontab.AddFunc("*/1 * * * *", task)
+
+	crontab.Start()
+
+	select {}
 }
