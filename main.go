@@ -7,6 +7,7 @@ import (
 
 	"github.com/antchfx/htmlquery"
 	"github.com/gocolly/colly"
+	"github.com/gocolly/colly/proxy"
 	rds "github.com/luweiv9988/go_redis"
 	cron "github.com/robfig/cron/v3"
 )
@@ -41,7 +42,7 @@ func main() {
 
 	// 限定访问域名
 	c := colly.NewCollector(
-		// colly.Async(true), //异步抓取
+		// colly.Async(true), //异步抓取,使用该功能最后需要加c.Wait()
 		colly.AllowedDomains(DomainName),
 		colly.UserAgent(Agent),
 		colly.MaxDepth(2), //爬取深度
@@ -63,6 +64,15 @@ func main() {
 		Parallelism: 1,
 	})
 
+	// 设置代理IP
+	vip, err := proxy.RoundRobinProxySwitcher("socks5://127.0.0.1:1337", "socks5://127.0.0.1:1338")
+	if err != nil {
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+	c.SetProxyFunc(vip)
+
 	// 发起请求
 	c.OnRequest(func(r *colly.Request) {
 		log.Println("Visiting", r.URL.String())
@@ -83,7 +93,6 @@ func main() {
 		for _, node := range nodes {
 			ipaddr := htmlquery.FindOne(node, "./td[1]")
 			port := htmlquery.FindOne(node, "./td[2]")
-			// fmt.Println(htmlquery.InnerText(ipaddr), htmlquery.InnerText(port))
 			_ = storage.Insert(htmlquery.InnerText(ipaddr), htmlquery.InnerText(port), 0)
 
 		}
