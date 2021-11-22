@@ -9,7 +9,6 @@ import (
 	"github.com/gocolly/colly"
 	"github.com/gocolly/colly/proxy"
 	rds "github.com/luweiv9988/go_redis"
-	cron "github.com/robfig/cron/v3"
 )
 
 // Agent 为模拟浏览器客户端
@@ -21,9 +20,26 @@ var (
 
 	// DomainName 限定域名区域
 	DomainName = "www.kuaidaili.com"
+
+	// DestinationURI
+	DestinationURI = "dos.juheapi.com"
 )
 
 func main() {
+	// crontab := cron.New()
+
+	// crontab.AddFunc("*/10 * * * *", Spider)
+
+	// crontab.AddFunc("*/1 * * * *", RequestURI)
+
+	// crontab.Start()
+
+	// select {}
+
+	RequestURI()
+}
+
+func Spider() {
 
 	// Colly 执行顺序
 	// OnRequest 请求发出之前调用
@@ -32,13 +48,6 @@ func main() {
 	// OnHTML 如果收到的内容是HTML，就在onResponse执行后调用
 	// OnXML 如果收到的内容是HTML或者XML，就在onHTML执行后调用
 	// OnScraped OnXML执行后调用
-
-	// Redis连接属性:
-	storage := &rds.Storage{
-		Address:  "127.0.0.1:6379",
-		Password: "",
-		DB:       0,
-	}
 
 	// 限定访问域名
 	c := colly.NewCollector(
@@ -64,15 +73,6 @@ func main() {
 		Parallelism: 1,
 	})
 
-	// 设置代理IP
-	vip, err := proxy.RoundRobinProxySwitcher("socks5://127.0.0.1:1337", "socks5://127.0.0.1:1338")
-	if err != nil {
-		if err != nil {
-			log.Fatal(err)
-		}
-	}
-	c.SetProxyFunc(vip)
-
 	// 发起请求
 	c.OnRequest(func(r *colly.Request) {
 		log.Println("Visiting", r.URL.String())
@@ -93,25 +93,75 @@ func main() {
 		for _, node := range nodes {
 			ipaddr := htmlquery.FindOne(node, "./td[1]")
 			port := htmlquery.FindOne(node, "./td[2]")
-			_ = storage.Insert(htmlquery.InnerText(ipaddr), htmlquery.InnerText(port), 0)
+			_ = redisInit().Insert(htmlquery.InnerText(ipaddr), htmlquery.InnerText(port), 0)
 
 		}
 	})
 
 	// 关闭Redis连接
-	defer storage.Close()
+	defer redisInit().Close()
 
+	// 目的URL
+	c.Visit(TargetURI)
+
+	// 结束请求
 	c.OnScraped(func(r *colly.Response) {
 		log.Println("Finished", r.Request.URL)
 	})
 
-	crontab := cron.New()
-	task := func() {
-		c.Visit(TargetURI)
+}
+
+func RequestURI() {
+
+	c := colly.NewCollector(
+		colly.AllowedDomains(DestinationURI),
+		colly.UserAgent(Agent),
+	)
+
+	// 设置代理IP
+	vip, err := proxy.RoundRobinProxySwitcher("http://127.0.0.1:9988", "socks5://127.0.0.1:1338")
+	if err != nil {
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
-	crontab.AddFunc("*/1 * * * *", task)
+	c.SetProxyFunc(vip)
 
-	crontab.Start()
+	// 发起请求
+	c.OnRequest(func(r *colly.Request) {
+		log.Println("Visiting", r.URL.String())
+	})
 
-	select {}
+	// 错误处理:
+	c.OnError(func(r *colly.Response, err error) {
+		log.Println("Request URL:", r.Request.URL, "failed with response:", r, "\nError:", err)
+	})
+
+	// 目的URL
+	c.Visit(TargetURI)
+
+	// 结束请求
+	c.OnScraped(func(r *colly.Response) {
+		log.Println("Finished", r.Request.URL)
+	})
+}
+
+func redisInit() *rds.Storage {
+
+	// Redis连接属性:
+	storage := &rds.Storage{
+		Address:  "127.0.0.1:6379",
+		Password: "",
+		DB:       0,
+	}
+	return storage
+
+}
+
+func splitProxy() {
+
+	proxyList := redisInit().GetAllKeys()
+
+	log.Println("PList-->", proxyList)
+
 }

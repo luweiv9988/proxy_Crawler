@@ -35,6 +35,8 @@ github.com/luweiv9988/go_redis v0.0.0-20211118132313-76efabbd2ef0 h1:UG7r4PggZ9b
 github.com/luweiv9988/go_redis v0.0.0-20211118132313-76efabbd2ef0/go.mod h1:W/MES5E4/jM0RobpNAoOuEAdFETx9wMfiC/tcf9lldk=
 github.com/luweiv9988/go_redis v0.0.0-20211119073559-c38a350a0c84 h1:3r/rBmU/V5wlo8aTy7yVnplRn0ATj9+3S4ST8oJB3FU=
 github.com/luweiv9988/go_redis v0.0.0-20211119073559-c38a350a0c84/go.mod h1:W/MES5E4/jM0RobpNAoOuEAdFETx9wMfiC/tcf9lldk=
+github.com/luweiv9988/go_redis v0.0.0-20211122070955-8e5e38e205f7 h1:xm7ENUycGLTnMOxKwNY62VuCGLF4r0ZR+xuDEbVA/nk=
+github.com/luweiv9988/go_redis v0.0.0-20211122070955-8e5e38e205f7/go.mod h1:W/MES5E4/jM0RobpNAoOuEAdFETx9wMfiC/tcf9lldk=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/robfig/cron v1.2.0 h1:ZjScXvvxeQ63Dbyxy76Fj3AT3Ut0aKsyd2/tl3DTMuQ=
 github.com/robfig/cron v1.2.0/go.mod h1:JGuDeoQd7Z6yL4zQhZ3OPEVHB7fL6Ka6skscFHfmt2k=
